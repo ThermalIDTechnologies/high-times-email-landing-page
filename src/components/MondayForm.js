@@ -127,7 +127,7 @@ const MondayForm = () => {
       Equipment: false,
       Other: false,
     },
-    MUV: "",
+    MUV: "Below 10K",
     notes: "",
   })
 
@@ -195,10 +195,11 @@ const MondayForm = () => {
         try {
           const res = await createItem()
           console.log(res)
-          !error && resetForm()
           if (!error) {
             resetForm()
             setSuccess(true)
+          } else {
+            setSuccess(false)
           }
         } catch (err) {
           console.error(err)
@@ -351,6 +352,7 @@ const MondayForm = () => {
                 replace={false}
                 value={inputs.MUV}
                 onChange={handleUnitChange}
+                required
               />
               <br />
               <label htmlFor="date-input" name="monthly-unit-volume">
