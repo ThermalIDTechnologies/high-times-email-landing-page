@@ -5639,6 +5639,13 @@ gatsby-plugin-apollo@0.1.1:
     apollo-boost "^0.4.4"
     isomorphic-fetch "^2.2.1"
 
+gatsby-plugin-google-analytics@^2.1.36:
+  version "2.1.36"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-google-analytics/-/gatsby-plugin-google-analytics-2.1.36.tgz#cbf19c45305ff50b6ab4612e7963ef9184f8b438"
+  integrity sha512-yFp75vJpTvfgqZXYlel4n7G5INykAnRFCrf/n9pn/XdnL7Vx49LzLkjwZ8SJzWIU856mAyxK1MsEJH/JXkOWAg==
+  dependencies:
+    "@babel/runtime" "^7.7.6"
+
 gatsby-plugin-google-fonts@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-google-fonts/-/gatsby-plugin-google-fonts-1.0.1.tgz#d71054f7bf207b9a8da227380369e18e6f4e0201"
@@ -10270,6 +10277,11 @@ react-popper@^1.3.4:
     prop-types "^15.6.1"
     typed-styles "^0.0.7"
     warning "^4.0.2"
+
+react-recaptcha-v3@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-recaptcha-v3/-/react-recaptcha-v3-1.1.0.tgz#6c4c4808b2336d98586f90c72c38acfe64a6a51c"
+  integrity sha512-mNX6q4KEbY68kEiy1K7bbPihW8Ty3AWPtkogzM03xAI092js9atk1ThUlbiiqsEZTktn0rJqoo3WYY2reLZVBQ==
 
 react-reconciler@^0.24.0:
   version "0.24.0"

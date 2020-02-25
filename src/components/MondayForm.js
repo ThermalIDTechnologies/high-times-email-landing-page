@@ -1,14 +1,9 @@
 import React, { useState } from "react"
-import {
-  CheckBox,
-  Form,
-  Select,
-  TextInput,
-  TextArea,
-} from "grommet"
+import { CheckBox, Form, Select, TextInput, TextArea } from "grommet"
 import styled from "styled-components"
 import gql from "graphql-tag"
 import { useMutation } from "@apollo/react-hooks"
+import { ReCaptcha } from "react-recaptcha-v3"
 
 import DateInputHooks from "./DateInputHooks"
 import useForm from "./../hooks/useForm"
@@ -103,6 +98,11 @@ const SuccessContainer = styled.div`
     }
   }
 `
+
+const verifyCallback = recaptchaToken => {
+  // Here you will get the final recaptchaToken!!!
+  console.log(recaptchaToken, "<= recaptcha")
+}
 
 const MondayForm = () => {
   const {
@@ -205,22 +205,29 @@ const MondayForm = () => {
         }
       }}
     >
+      <ReCaptcha
+        sitekey="6LcihsAUAAAAACpTcpAas2OCVzxxG6NF-_b8nF3E"
+        action="form"
+        verifyCallback={verifyCallback}
+      />
       {success ? (
         <SuccessContainer>
           <div>
-          <h4>Thanks for filling out our form!</h4>
-          <h4>A customer service representative will be in touch.</h4>
-          <h4>
-            Visit our site in the mean time
-             <a href="https://thclabelsolutions.com"> here</a>.
-          </h4>
+            <h4>Thanks for filling out our form!</h4>
+            <h4>A customer service representative will be in touch.</h4>
+            <h4>
+              Visit our site in the mean time
+              <a href="https://thclabelsolutions.com"> here</a>.
+            </h4>
           </div>
         </SuccessContainer>
       ) : (
         <>
           <InnerFormContainer disabled={loading} aria-busy={loading}>
             <LeftFormSection>
-              <label htmlFor="company-name" name="company-name">Company Name</label>
+              <label htmlFor="company-name" name="company-name">
+                Company Name
+              </label>
               <StyledInput
                 id="company-name"
                 name="companyName"
@@ -241,7 +248,9 @@ const MondayForm = () => {
                 onChange={handleChange}
                 required
               />
-              <label htmlFor="phone" name="phone">Phone</label>
+              <label htmlFor="phone" name="phone">
+                Phone
+              </label>
               <StyledInput
                 id="phone"
                 name="phone"
@@ -251,7 +260,9 @@ const MondayForm = () => {
                 onChange={handleChange}
                 required
               />
-              <label htmlFor="email" name="email">Email</label>
+              <label htmlFor="email" name="email">
+                Email
+              </label>
               <StyledInput
                 id="email"
                 name="email"
@@ -261,7 +272,9 @@ const MondayForm = () => {
                 onChange={handleChange}
                 required
               />
-              <label htmlFor="operating-state" name="operating-state">Operating State</label>
+              <label htmlFor="operating-state" name="operating-state">
+                Operating State
+              </label>
               <StyledInput
                 id="operating-state"
                 name="operatingState"
@@ -270,7 +283,9 @@ const MondayForm = () => {
                 value={inputs.operatingState}
                 onChange={handleChange}
               />
-              <label htmlFor="company-type" name="company-type">Company Type</label>
+              <label htmlFor="company-type" name="company-type">
+                Company Type
+              </label>
               <StyledInput
                 id="company-type"
                 name="companyType"
@@ -326,7 +341,9 @@ const MondayForm = () => {
                   onChange={handleChecked}
                 />
               </StyledCheckBox>
-              <label htmlFor="monthly-unit-volume" name="monthly-unit-volume">Monthly Unit Volume</label>
+              <label htmlFor="monthly-unit-volume" name="monthly-unit-volume">
+                Monthly Unit Volume
+              </label>
               <Select
                 id="monthly-unit-volume"
                 name="MUV"
@@ -344,7 +361,9 @@ const MondayForm = () => {
                 text={text}
                 setText={setText}
               />
-              <label htmlFor="notes" name="notes">Additional Notes</label>
+              <label htmlFor="notes" name="notes">
+                Additional Notes
+              </label>
               <TextArea
                 id="notes"
                 name="notes"
