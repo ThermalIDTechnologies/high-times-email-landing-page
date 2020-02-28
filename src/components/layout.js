@@ -1,14 +1,8 @@
-/**
- * Layout component that queries for data
- * with Gatsby's useStaticQuery component
- *
- * See: https://www.gatsbyjs.org/docs/use-static-query/
- */
-
 import React from "react"
 import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
 import styled from "styled-components"
+import { AnimatePresence, motion } from "framer-motion"
 
 import Header from "./header"
 import "./layout.css"
@@ -18,12 +12,12 @@ import { Grommet, Anchor, Box, Text } from "grommet"
 const myTheme = {
   global: {
     colors: {
-      brand: '#497638',
+      brand: "#497638",
     },
     focus: {
       border: {
-        color: '#FCD199'
-      }
+        color: "#FCD199",
+      },
     },
   },
 }
@@ -31,7 +25,7 @@ const myTheme = {
 const MainWrapper = styled.div`
   width: 100%;
   height: 100%;
-  background-color: rgba(255,250,245,0.8);
+  background-color: rgba(255, 250, 245, 0.8);
   padding-top: 100px;
   margin: 0;
 
@@ -52,41 +46,50 @@ const Layout = ({ children }) => {
     }
   `)
 
+  const easing = [0.6, -0.05, 0.01, 0.99]
+
   return (
     <Grommet style={{ height: `100vh` }} theme={myTheme}>
-      <StyledBackgroundSection filename="Dope-background-image.webp">
-        <Header siteTitle={data.site.siteMetadata.title} />
-        <MainWrapper>
-          <main
-            style={{
-              margin: `0 auto`,
-              maxWidth: 960,
-              padding: `1.45rem 1.0875rem 0`,
-              
-            }}
-          >
-            {children}
-          </main>
-          <Box
-            style={{ backgroundColor: `transparent` }}
-            direction="column"
-            justify="center"
-            pad="small"
-          >
-            <Text textAlign="center" size="small">
-              <Anchor href="tel:8008424773">800-842-4773</Anchor>
-            </Text>
-            <Text textAlign="center" size="small">
-              <Anchor href="mailto:sales@thclabelsolutions.com">
-                sales@thclabelsolutions.com
-              </Anchor>
-            </Text>
-            <Text textAlign="center" size="small">
-              © {new Date().getFullYear()} THC Label Solutions
-            </Text>
-          </Box>
-        </MainWrapper>
-      </StyledBackgroundSection>
+      <AnimatePresence exitBeforeEnter>
+        <motion.div
+          exit={{ opacity: 0 }}
+          initial="initial"
+          animate="animate"
+        >
+          <StyledBackgroundSection filename="Dope-background-image.webp">
+            <Header siteTitle={data.site.siteMetadata.title} />
+            <MainWrapper>
+              <main
+                style={{
+                  margin: `0 auto`,
+                  maxWidth: 960,
+                  padding: `1.45rem 1.0875rem 0`,
+                }}
+              >
+                {children}
+              </main>
+              <Box
+                style={{ backgroundColor: `transparent` }}
+                direction="column"
+                justify="center"
+                pad="small"
+              >
+                <Text textAlign="center" size="small">
+                  <Anchor href="tel:8008424773">800-842-4773</Anchor>
+                </Text>
+                <Text textAlign="center" size="small">
+                  <Anchor href="mailto:sales@thclabelsolutions.com">
+                    sales@thclabelsolutions.com
+                  </Anchor>
+                </Text>
+                <Text textAlign="center" size="small">
+                  © {new Date().getFullYear()} THC Label Solutions
+                </Text>
+              </Box>
+            </MainWrapper>
+          </StyledBackgroundSection>
+        </motion.div>
+      </AnimatePresence>
     </Grommet>
   )
 }

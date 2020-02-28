@@ -7,6 +7,8 @@ import { ReCaptcha } from "react-recaptcha-v3"
 
 import DateInputHooks from "./DateInputHooks"
 import useForm from "./../hooks/useForm"
+import { motion } from "framer-motion"
+import { fadeInUp, fadeInRight, stagger } from "./animations/Motions"
 
 const CREATE_ITEM = gql`
   mutation Create_item($item_name: String!, $column_values: JSON!) {
@@ -27,7 +29,7 @@ const StyledForm = styled(Form)`
   padding: 1.5rem 3rem;
 `
 
-const InnerFormContainer = styled.div`
+const InnerFormContainer = styled(motion.div)`
   display: block;
 
   @media screen and (min-width: 768px) {
@@ -38,9 +40,15 @@ const InnerFormContainer = styled.div`
   }
 `
 
-const LeftFormSection = styled.section``
+const LeftFormSection = styled(motion.fieldset)`
+  border: none;
+  margin-bottom: 0;
+`
 
-const RightFormSection = styled.section`
+const RightFormSection = styled(motion.fieldset)`
+  border: none;
+  margin-bottom: 0;
+
   button {
     width: 100%;
     margin: 0.3rem 0;
@@ -57,7 +65,7 @@ const RightFormSection = styled.section`
   }
 `
 
-const StyledButton = styled.div`
+const StyledButton = styled(motion.div)`
   margin: 1rem 0;
   text-align: center;
 
@@ -79,7 +87,7 @@ const StyledInput = styled(TextInput)`
 
 const StyledCheckBox = styled.div`
   label {
-    margin: 0.4rem 0;
+    margin: 0.39rem 0;
   }
 `
 
@@ -142,8 +150,10 @@ const MondayForm = () => {
       if (inputs.productInterest[key] === true) {
         arr.push(key)
       }
+      return arr
     })
-    setCheckedID(arr)
+
+    return setCheckedID(arr)
   }
 
   const formatDateToISO = () => {
@@ -189,200 +199,275 @@ const MondayForm = () => {
   })
 
   return (
-    <StyledForm
-      onSubmit={async e => {
-        e.preventDefault()
-        try {
-          const res = await createItem()
-          console.log(res)
-          if (!error) {
-            resetForm()
-            setSuccess(true)
-          } else {
-            setSuccess(false)
+    <motion.div exit={{ opacity: 0 }} initial="initial" animate="animate">
+      <StyledForm
+        variants={fadeInUp}
+        onSubmit={async e => {
+          e.preventDefault()
+          try {
+            const res = await createItem()
+            console.log(res)
+            if (!error) {
+              resetForm()
+              setSuccess(true)
+            } else {
+              setSuccess(false)
+            }
+          } catch (err) {
+            console.error(err)
           }
-        } catch (err) {
-          console.error(err)
-        }
-      }}
-    >
-      <ReCaptcha
-        sitekey="6LcihsAUAAAAACpTcpAas2OCVzxxG6NF-_b8nF3E"
-        action="form"
-        verifyCallback={verifyCallback}
-      />
-      {success ? (
-        <SuccessContainer>
-          <div>
-            <h4>Thanks for filling out our form!</h4>
-            <h4>A customer service representative will be in touch.</h4>
-            <h4>
-              Visit our site in the mean time
-              <a href="https://thclabelsolutions.com"> here</a>.
-            </h4>
-          </div>
-        </SuccessContainer>
-      ) : (
-        <>
-          <InnerFormContainer disabled={loading} aria-busy={loading}>
-            <LeftFormSection>
-              <label htmlFor="company-name" name="company-name">
-                Company Name
-              </label>
-              <StyledInput
-                id="company-name"
-                name="companyName"
-                type="text"
-                placeholder="THC Solutions"
-                value={inputs.companyName}
-                onChange={handleChange}
-                required
-              />
-              <label htmlFor="full-name" name="full-name">
-                Full Name
-              </label>
-              <StyledInput
-                id="full-name"
-                name="fullName"
-                placeholder="Mary Jane"
-                value={inputs.fullName}
-                onChange={handleChange}
-                required
-              />
-              <label htmlFor="phone" name="phone">
-                Phone
-              </label>
-              <StyledInput
-                id="phone"
-                name="phone"
-                type="tel"
-                placeholder="800-842-4773"
-                value={inputs.phone}
-                onChange={handleChange}
-                required
-              />
-              <label htmlFor="email" name="email">
-                Email
-              </label>
-              <StyledInput
-                id="email"
-                name="email"
-                type="email"
-                placeholder="sales@thclabelsolutions.com"
-                value={inputs.email}
-                onChange={handleChange}
-                required
-              />
-              <label htmlFor="operating-state" name="operating-state">
-                Operating State
-              </label>
-              <StyledInput
-                id="operating-state"
-                name="operatingState"
-                type="text"
-                placeholder="ex: California"
-                value={inputs.operatingState}
-                onChange={handleChange}
-              />
-              <label htmlFor="company-type" name="company-type">
-                Company Type
-              </label>
-              <StyledInput
-                id="company-type"
-                name="companyType"
-                type="text"
-                placeholder="ex: manufacturer"
-                value={inputs.companyType}
-                onChange={handleChange}
-              />
-            </LeftFormSection>
-            <RightFormSection>
-              <StyledCheckBox>
-                <label name="product-interest">Product Interest:</label>
-                <CheckBox
-                  name="Labels"
-                  checked={inputs.productInterest.Labels}
-                  label="Labels"
-                  onChange={handleChecked}
+        }}
+      >
+        <ReCaptcha
+          sitekey="6LcihsAUAAAAACpTcpAas2OCVzxxG6NF-_b8nF3E"
+          action="form"
+          verifyCallback={verifyCallback}
+        />
+        {success ? (
+          <SuccessContainer>
+            <div>
+              <h4>Thanks for filling out our form!</h4>
+              <h4>A customer service representative will be in touch.</h4>
+              <h4>
+                Visit our site in the mean time
+                <a href="https://thclabelsolutions.com"> here</a>.
+              </h4>
+            </div>
+          </SuccessContainer>
+        ) : (
+          <>
+            <InnerFormContainer>
+              <LeftFormSection
+                variants={stagger}
+                disabled={loading}
+                aria-busy={loading}
+              >
+                <motion.div variants={fadeInUp}>
+                  <label htmlFor="company-name" name="company-name">
+                    Company Name
+                  </label>
+                </motion.div>
+                <motion.div variants={fadeInUp}>
+                  <StyledInput
+                    id="company-name"
+                    name="companyName"
+                    type="text"
+                    placeholder="THC Solutions"
+                    value={inputs.companyName}
+                    onChange={handleChange}
+                    required
+                  />
+                </motion.div>
+                <motion.div variants={fadeInUp}>
+                  <label htmlFor="full-name" name="full-name">
+                    Full Name
+                  </label>
+                </motion.div>
+                <motion.div variants={fadeInUp}>
+                  <StyledInput
+                    id="full-name"
+                    name="fullName"
+                    placeholder="Mary Jane"
+                    value={inputs.fullName}
+                    onChange={handleChange}
+                    required
+                  />
+                </motion.div>
+                <motion.div variants={fadeInUp}>
+                  <label htmlFor="phone" name="phone">
+                    Phone
+                  </label>
+                </motion.div>
+                <motion.div variants={fadeInUp}>
+                  <StyledInput
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    placeholder="800-842-4773"
+                    value={inputs.phone}
+                    onChange={handleChange}
+                    required
+                  />
+                </motion.div>
+                <motion.div variants={fadeInUp}>
+                  <label htmlFor="email" name="email">
+                    Email
+                  </label>
+                </motion.div>
+                <motion.div variants={fadeInUp}>
+                  <StyledInput
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="sales@thclabelsolutions.com"
+                    value={inputs.email}
+                    onChange={handleChange}
+                    required
+                  />
+                </motion.div>
+                <motion.div variants={fadeInUp}>
+                  <label htmlFor="operating-state" name="operating-state">
+                    Operating State
+                  </label>
+                </motion.div>
+                <motion.div variants={fadeInUp}>
+                  <StyledInput
+                    id="operating-state"
+                    name="operatingState"
+                    type="text"
+                    placeholder="ex: California"
+                    value={inputs.operatingState}
+                    onChange={handleChange}
+                  />
+                </motion.div>
+                <motion.div variants={fadeInUp}>
+                  <label htmlFor="company-type" name="company-type">
+                    Company Type
+                  </label>
+                </motion.div>
+                <motion.div variants={fadeInUp}>
+                  <StyledInput
+                    id="company-type"
+                    name="companyType"
+                    type="text"
+                    placeholder="ex: manufacturer"
+                    value={inputs.companyType}
+                    onChange={handleChange}
+                  />
+                </motion.div>
+              </LeftFormSection>
+              <RightFormSection
+                variants={stagger}
+                disabled={loading}
+                aria-busy={loading}
+              >
+                <StyledCheckBox>
+                <motion.div variants={fadeInUp}>
+                  <label name="product-interest">Product Interest:</label>
+                  </motion.div>
+                  <motion.div variants={fadeInUp}>
+                  <CheckBox
+                    name="Labels"
+                    checked={inputs.productInterest.Labels}
+                    label="Labels"
+                    onChange={handleChecked}
+                  />
+                  </motion.div>
+                  <motion.div variants={fadeInUp}>
+                  <CheckBox
+                    name="Packaging"
+                    checked={inputs.productInterest.Packaging}
+                    label="Packaging"
+                    onChange={handleChecked}
+                  />
+                  </motion.div>
+                  <motion.div variants={fadeInUp}>
+                  <CheckBox
+                    name="Print"
+                    checked={inputs.productInterest.Print}
+                    label="Print & Application"
+                    onChange={handleChecked}
+                  />
+                  </motion.div>
+                  <motion.div variants={fadeInUp}>
+                  <CheckBox
+                    name="Design"
+                    checked={inputs.productInterest.Design}
+                    label="Design"
+                    onChange={handleChecked}
+                  />
+                  </motion.div>
+                  <motion.div variants={fadeInUp}>
+                  <CheckBox
+                    name="Custom"
+                    checked={inputs.productInterest.Custom}
+                    label="Custom Solutions"
+                    onChange={handleChecked}
+                  />
+                  </motion.div>
+                  <motion.div variants={fadeInUp}>
+                  <CheckBox
+                    name="Equipment"
+                    checked={inputs.productInterest.Equipment}
+                    label="Capital Equipment"
+                    onChange={handleChecked}
+                  />
+                  </motion.div>
+                  <motion.div variants={fadeInUp}>
+                  <CheckBox
+                    name="Other"
+                    checked={inputs.productInterest.Other}
+                    label="Other"
+                    onChange={handleChecked}
+                  />
+                  </motion.div>
+                </StyledCheckBox>
+                <motion.div variants={fadeInUp}>
+                <label htmlFor="monthly-unit-volume" name="monthly-unit-volume">
+                  Monthly Unit Volume
+                </label>
+                </motion.div>
+                <motion.div variants={fadeInUp}>
+                <Select
+                  id="monthly-unit-volume"
+                  name="MUV"
+                  options={[
+                    "Below 10K",
+                    "10K+",
+                    "30K+",
+                    "50K+",
+                    "75K+",
+                    "100K+",
+                  ]}
+                  replace={false}
+                  value={inputs.MUV}
+                  onChange={handleUnitChange}
+                  required
                 />
-                <CheckBox
-                  name="Packaging"
-                  checked={inputs.productInterest.Packaging}
-                  label="Packaging"
-                  onChange={handleChecked}
+                </motion.div>
+                <motion.div variants={fadeInUp}>
+                <label htmlFor="date-input" name="monthly-unit-volume">
+                  Date When You Need Product
+                </label>
+                </motion.div>
+                <motion.div variants={fadeInUp}>
+                <DateInputHooks
+                  style={{ margin: `.3rem 0` }}
+                  text={text}
+                  setText={setText}
                 />
-                <CheckBox
-                  name="Print"
-                  checked={inputs.productInterest.Print}
-                  label="Print & Application"
-                  onChange={handleChecked}
+                </motion.div>
+                <motion.div variants={fadeInUp}>
+                <label htmlFor="notes" name="notes">
+                  Additional Notes
+                </label>
+                </motion.div>
+                <motion.div variants={fadeInUp}>
+                <TextArea
+                  id="notes"
+                  name="notes"
+                  placeholder="Additional notes..."
+                  value={inputs.notes}
+                  onChange={handleChange}
                 />
-                <CheckBox
-                  name="Design"
-                  checked={inputs.productInterest.Design}
-                  label="Design"
-                  onChange={handleChecked}
-                />
-                <CheckBox
-                  name="Custom"
-                  checked={inputs.productInterest.Custom}
-                  label="Custom Solutions"
-                  onChange={handleChecked}
-                />
-                <CheckBox
-                  name="Equipment"
-                  checked={inputs.productInterest.Equipment}
-                  label="Capital Equipment"
-                  onChange={handleChecked}
-                />
-                <CheckBox
-                  name="Other"
-                  checked={inputs.productInterest.Other}
-                  label="Other"
-                  onChange={handleChecked}
-                />
-              </StyledCheckBox>
-              <label htmlFor="monthly-unit-volume" name="monthly-unit-volume">
-                Monthly Unit Volume
-              </label>
-              <Select
-                id="monthly-unit-volume"
-                name="MUV"
-                options={["Below 10K", "10K+", "30K+", "50K+", "75K+", "100K+"]}
-                replace={false}
-                value={inputs.MUV}
-                onChange={handleUnitChange}
-                required
-              />
-              <br />
-              <label htmlFor="date-input" name="monthly-unit-volume">
-                Date When You Need Product
-              </label>
-              <DateInputHooks
-                style={{ margin: `.3rem 0` }}
-                text={text}
-                setText={setText}
-              />
-              <label htmlFor="notes" name="notes">
-                Additional Notes
-              </label>
-              <TextArea
-                id="notes"
-                name="notes"
-                placeholder="Additional notes..."
-                value={inputs.notes}
-                onChange={handleChange}
-              />
-            </RightFormSection>
-          </InnerFormContainer>
-          <StyledButton>
-            <button label="Contact Us!" type="submit" onClick={checkedToID}>
-              Contact Us!
-            </button>
-          </StyledButton>
-        </>
-      )}
-    </StyledForm>
+                </motion.div>
+              </RightFormSection>
+            </InnerFormContainer>
+            <StyledButton variants={fadeInUp} transition={{ delay: 0.4 }}>
+              <motion.button
+                whileHover={{ scale: 1.05, transition: {type: "spring", damping: 20, mass: 0.7} }}
+                whileTap={{ scale: 0.95 }}
+                label="Contact Us!"
+                type="submit"
+                onClick={checkedToID}
+              >
+                Contact Us!
+              </motion.button>
+            </StyledButton>
+          </>
+        )}
+      </StyledForm>
+    </motion.div>
   )
 }
 
